@@ -1,0 +1,16 @@
+protocol,factor,metric,metricLabel,unit,n_levels,H,p,df,significant_0.05
+AODV,rate,pdrPct,PDR,%,4,74.14418732782372,5.527340147173761e-16,3,True
+AODV,rate,deliveryRatioPct,Razão de entrega,%,4,74.14418732782372,5.527340147173761e-16,3,True
+AODV,rate,throughputMbps,Throughput,Mbps,4,85.52479338842971,2.0021884581088554e-18,3,True
+AODV,rate,delayMs,Atraso médio,ms,4,94.26033057851237,2.6623800146397907e-20,3,True
+AODV,rate,jitterMs,Jitter médio,ms,4,33.922038567493075,2.0577058121687936e-07,3,True
+DSDV,rate,pdrPct,PDR,%,4,46.16292011019283,5.236674712126518e-10,3,True
+DSDV,rate,deliveryRatioPct,Razão de entrega,%,4,46.16292011019283,5.236674712126518e-10,3,True
+DSDV,rate,throughputMbps,Throughput,Mbps,4,83.25465564738289,6.148244427896917e-18,3,True
+DSDV,rate,delayMs,Atraso médio,ms,4,93.78914600550956,3.361404107522092e-20,3,True
+DSDV,rate,jitterMs,Jitter médio,ms,4,72.256694214876,1.402580131832368e-15,3,True
+OLSR,rate,pdrPct,PDR,%,4,31.32247933884298,7.26998017739512e-07,3,True
+OLSR,rate,deliveryRatioPct,Razão de entrega,%,4,41.49349862258947,5.138582943483143e-09,3,True
+OLSR,rate,throughputMbps,Throughput,Mbps,4,94.20331609828033,2.738557735775901e-20,3,True
+OLSR,rate,delayMs,Atraso médio,ms,4,96.80495867768593,7.557496019995236e-21,3,True
+OLSR,rate,jitterMs,Jitter médio,ms,4,41.7758126721763,4.476576187071714e-09,3,True

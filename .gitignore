@@ -1,0 +1,11 @@
+# Cache do matplotlib e do Python
+.mplconfig/
+__pycache__/
+*.pyc
+
+# stdout do lote e teste rápido (parciais e logs são versionados)
+data/raw/run_all*.log
+data/raw/smoke.csv
+
+# Sistema
+.DS_Store

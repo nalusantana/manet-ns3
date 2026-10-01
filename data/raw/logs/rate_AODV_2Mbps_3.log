@@ -1,0 +1,4 @@
+[CONFIG] protocol=AODV speed=10 pause=0 nodes=20 flows=4 packetSize=1024 rate=2Mbps simTime=120 appStart=10 area=500x500 txPower=7.5 seed=12345 run=3
+[ROUTING] instalado=ns3::aodv::RoutingProtocol nos=20
+[RESULT] protocol=AODV speed=10 run=3 nodes=20 flowsExportados=4 tx=107420 rx=23312 pdrAgregado=21.70%
+[OUTPUT] /home/ana/Downloads/ns-allinone-3.48/manet-ns3/data/raw/parts/rate_AODV_2Mbps_3.csv
