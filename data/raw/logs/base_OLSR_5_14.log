@@ -1,4 +1,4 @@
 [CONFIG] protocol=OLSR speed=5 pause=0 nodes=20 flows=4 packetSize=1024 rate=256kbps simTime=120 appStart=10 area=500x500 txPower=7.5 seed=12345 run=14
 [ROUTING] instalado=ns3::olsr::RoutingProtocol nos=20
-[RESULT] protocol=OLSR speed=5 run=14 nodes=20 flowsExportados=4 tx=10461 rx=7941 pdrAgregado=75.91%
+[RESULT] protocol=OLSR speed=5 run=14 nodes=20 flowsExportados=4 tx=13631 rx=13165 pdrAgregado=96.58%
 [OUTPUT] /home/ana/Downloads/ns-allinone-3.48/manet-ns3/data/raw/parts/base_OLSR_5_14.csv

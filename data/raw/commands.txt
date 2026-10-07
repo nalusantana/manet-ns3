@@ -1,5 +1,5 @@
 # Comandos executados por run_all.sh
-# data: 2026-09-30T19:16:36-03:00
+# data: 2026-10-06T20:36:23-03:00
 # binario: /home/ana/Downloads/ns-allinone-3.48/manet-ns3/../ns-3.48/build/scratch/ns3.48-manet-routing-default
 # parametros fixos: pause=0 flows=4 packetSize=1024 simTime=120 appStart=10 txPower=7.5 seed=12345 runs=30
 

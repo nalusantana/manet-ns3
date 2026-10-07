@@ -1,4 +1,4 @@
 [CONFIG] protocol=DSDV speed=5 pause=0 nodes=20 flows=4 packetSize=1024 rate=256kbps simTime=120 appStart=10 area=500x500 txPower=7.5 seed=12345 run=18
 [ROUTING] instalado=ns3::dsdv::RoutingProtocol nos=20
-[RESULT] protocol=DSDV speed=5 run=18 nodes=20 flowsExportados=4 tx=13748 rx=6394 pdrAgregado=46.51%
+[RESULT] protocol=DSDV speed=5 run=18 nodes=20 flowsExportados=4 tx=13748 rx=12307 pdrAgregado=89.52%
 [OUTPUT] /home/ana/Downloads/ns-allinone-3.48/manet-ns3/data/raw/parts/base_DSDV_5_18.csv

@@ -184,10 +184,11 @@ Notas:
 
 ## Limitações
 
-- **Propagação idealizada.** Com `FriisPropagationLossModel` e 7,5 dBm o alcance
-  efetivo supera os 500 m da área, de modo que os 20 nós compartilham um único
-  domínio de colisão. O cenário mede principalmente o efeito da mobilidade sobre
-  a contenção e a validade das rotas.
+- **Propagação idealizada.** O `FriisPropagationLossModel` é fixado em 2,412 GHz
+  (canal 1 do 802.11b) e o alcance resultante, ~295 m, é limitado pelo
+  `ThresholdPreambleDetectionModel` do ns-3 e não pelo piso de ruído. Como a área
+  é 500 × 500 m, a rede fica conectada mas exige encaminhamento multi-salto. O
+  cenário mede o efeito da mobilidade sobre a validade das rotas e a contenção.
 - **Velocidade constante por nó** e pause time zero.
 - **Uma única seed mestre**, com a variação entre execuções vindo do `run`.
 - **Vazão medida na camada de rede** (datagrama IP), ligeiramente acima do

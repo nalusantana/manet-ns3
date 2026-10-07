@@ -138,7 +138,9 @@ main(int argc, char* argv[])
 
     YansWifiChannelHelper wifiChannel;
     wifiChannel.SetPropagationDelay("ns3::ConstantSpeedPropagationDelayModel");
-    wifiChannel.AddPropagationLoss("ns3::FriisPropagationLossModel");
+    wifiChannel.AddPropagationLoss("ns3::FriisPropagationLossModel",
+                                   "Frequency",
+                                   DoubleValue(2.412e9)); // canal 1 do 802.11b
 
     YansWifiPhyHelper wifiPhy;
     wifiPhy.SetChannel(wifiChannel.Create());

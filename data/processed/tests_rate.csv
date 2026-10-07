@@ -1,21 +1,21 @@
 variable,value,metric,metricLabel,unit,H,p,df,significant_0.05
-rate,1Mbps,pdrPct,PDR,%,25.608888888888885,2.7485296982560915e-06,2,True
-rate,1Mbps,deliveryRatioPct,Razão de entrega,%,2.7343589743589973,0.2548246831885473,2,False
-rate,1Mbps,throughputMbps,Throughput,Mbps,2.7343589743589973,0.2548246831885473,2,False
-rate,1Mbps,delayMs,Atraso médio,ms,25.376996336996342,3.086421686038555e-06,2,True
-rate,1Mbps,jitterMs,Jitter médio,ms,39.800830280830326,2.2769815778913646e-09,2,True
-rate,256kbps,pdrPct,PDR,%,29.237899877899906,4.4778620521036525e-07,2,True
-rate,256kbps,deliveryRatioPct,Razão de entrega,%,30.256683733386048,2.690571929643956e-07,2,True
-rate,256kbps,throughputMbps,Throughput,Mbps,30.256683733386048,2.690571929643956e-07,2,True
-rate,256kbps,delayMs,Atraso médio,ms,17.185738705738743,0.0001854232787952863,2,True
-rate,256kbps,jitterMs,Jitter médio,ms,22.091428571428594,1.5955383124352812e-05,2,True
-rate,2Mbps,pdrPct,PDR,%,33.608595848595826,5.03484539506527e-08,2,True
-rate,2Mbps,deliveryRatioPct,Razão de entrega,%,3.7902808302808353,0.15029722955807714,2,False
-rate,2Mbps,throughputMbps,Throughput,Mbps,3.7902808302808353,0.15029722955807714,2,False
-rate,2Mbps,delayMs,Atraso médio,ms,12.708864468864476,0.0017390222753027756,2,True
-rate,2Mbps,jitterMs,Jitter médio,ms,37.31369963369963,7.896471547134712e-09,2,True
-rate,512kbps,pdrPct,PDR,%,21.12126984126985,2.5916391301942387e-05,2,True
-rate,512kbps,deliveryRatioPct,Razão de entrega,%,7.56083028083026,0.02281321876987744,2,True
-rate,512kbps,throughputMbps,Throughput,Mbps,7.56083028083026,0.02281321876987744,2,True
-rate,512kbps,delayMs,Atraso médio,ms,24.060170940170906,5.962113831304638e-06,2,True
-rate,512kbps,jitterMs,Jitter médio,ms,28.75672771672771,5.695815557875637e-07,2,True
+rate,1Mbps,pdrPct,PDR,%,16.616654456654487,0.00024645596329603205,2,True
+rate,1Mbps,deliveryRatioPct,Razão de entrega,%,14.052161172161163,0.0008884070004982435,2,True
+rate,1Mbps,throughputMbps,Throughput,Mbps,14.052161172161163,0.0008884070004982435,2,True
+rate,1Mbps,delayMs,Atraso médio,ms,37.24336996336996,8.179089654670172e-09,2,True
+rate,1Mbps,jitterMs,Jitter médio,ms,47.93172161172163,3.906239775681796e-11,2,True
+rate,256kbps,pdrPct,PDR,%,7.333491378837293,0.025559513343617217,2,True
+rate,256kbps,deliveryRatioPct,Razão de entrega,%,7.333491378837293,0.025559513343617217,2,True
+rate,256kbps,throughputMbps,Throughput,Mbps,7.333491378837293,0.025559513343617217,2,True
+rate,256kbps,delayMs,Atraso médio,ms,5.177142857142826,0.07512728815869153,2,False
+rate,256kbps,jitterMs,Jitter médio,ms,4.610207570207592,0.09974844771338802,2,False
+rate,2Mbps,pdrPct,PDR,%,54.05548229548236,1.8281051041655474e-12,2,True
+rate,2Mbps,deliveryRatioPct,Razão de entrega,%,55.371721611721625,9.46636891214323e-13,2,True
+rate,2Mbps,throughputMbps,Throughput,Mbps,55.371721611721625,9.46636891214323e-13,2,True
+rate,2Mbps,delayMs,Atraso médio,ms,11.322002442002429,0.003479031874086889,2,True
+rate,2Mbps,jitterMs,Jitter médio,ms,75.25782661782665,4.5495724976373855e-17,2,True
+rate,512kbps,pdrPct,PDR,%,2.9932358719392482,0.2238860781982447,2,False
+rate,512kbps,deliveryRatioPct,Razão de entrega,%,2.8284481907082824,0.24311417370374447,2,False
+rate,512kbps,throughputMbps,Throughput,Mbps,2.8284481907082824,0.24311417370374447,2,False
+rate,512kbps,delayMs,Atraso médio,ms,24.807716727716695,4.102728310985667e-06,2,True
+rate,512kbps,jitterMs,Jitter médio,ms,12.82666666666671,0.0016395502159426319,2,True
