@@ -4,7 +4,7 @@ plot.py — gera as figuras a partir de data/processed/summary_*.csv.
 
 Experimento base (velocidade):
     pdr_vs_speed, throughput_vs_speed, delay_vs_speed, jitter_vs_speed,
-    comparativo_10ms, metricas_vs_velocidade
+    comparativo_20ms, metricas_vs_velocidade
 
 Variável adicional (taxa de transmissão, 10 m/s):
     pdr_vs_rate, throughput_vs_rate, delay_vs_rate, jitter_vs_rate,
@@ -38,6 +38,10 @@ import matplotlib  # noqa: E402
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
+from matplotlib.ticker import FuncFormatter  # noqa: E402
+
+# Vírgula decimal nos eixos, como no texto do artigo.
+COMMA = FuncFormatter(lambda v, _pos: f"{v:g}".replace(".", ","))
 
 # ---------------------------------------------------------------------------
 # Estilo
@@ -63,10 +67,12 @@ STYLE = {
 SPEED_ORDER = [1, 5, 10, 20]
 RATE_ORDER = ["256kbps", "512kbps", "1Mbps", "2Mbps"]
 RATE_LABELS = {"256kbps": "256 kbps", "512kbps": "512 kbps", "1Mbps": "1 Mbps", "2Mbps": "2 Mbps"}
+# Rótulos curtos (em Mbps) para os painéis 2x2, onde "256 kbps" se sobrepõe.
+RATE_SHORT = {"256kbps": "0,256", "512kbps": "0,512", "1Mbps": "1", "2Mbps": "2"}
 
 METRICS = [
     ("pdrPct", "PDR", "%", "pdr"),
-    ("throughputMbps", "Throughput", "Mbps", "throughput"),
+    ("throughputMbps", "Vazão", "Mbps", "throughput"),
     ("delayMs", "Atraso médio", "ms", "delay"),
     ("jitterMs", "Jitter médio", "ms", "jitter"),
 ]
@@ -134,6 +140,7 @@ def line_figure(df, metric, title, ylabel, var, figures, fname):
         ax.set_xticks(range(len(RATE_ORDER)))
         ax.set_xticklabels([RATE_LABELS[r] for r in RATE_ORDER])
     ax.set_ylabel(ylabel)
+    ax.yaxis.set_major_formatter(COMMA)
     ax.set_title(title)
     if metric in ("delayMs", "jitterMs"):
         # atraso e jitter nao podem ser negativos; o IC alto do DSDV a 1 m/s
@@ -149,7 +156,7 @@ def bar_figure(df, var, value, figures, fname, suptitle):
     A unidade vai no título do painel; rótulos verticais em quatro painéis lado
     a lado se sobrepõem. ``constrained_layout`` cuida do espaçamento.
     """
-    fig, axes = plt.subplots(1, 4, figsize=(5.2, 1.65), constrained_layout=True)
+    fig, axes = plt.subplots(1, 4, figsize=(6.4, 1.9), constrained_layout=True)
     width = 0.6
     x = range(len(PROTOCOL_ORDER))
     for ax, (metric, label, unit, _) in zip(axes, METRICS):
@@ -174,12 +181,13 @@ def bar_figure(df, var, value, figures, fname, suptitle):
             linewidth=0.5,
         )
         ax.set_xticks(list(x))
-        ax.set_xticklabels(PROTOCOL_ORDER, fontsize=9.5)
+        ax.set_xticklabels(PROTOCOL_ORDER, fontsize=8)
         ax.set_title(f"{label}\n({unit})", fontsize=10)
         ax.tick_params(axis="y", labelsize=9.5)
+        ax.yaxis.set_major_formatter(COMMA)
         if metric in ("delayMs", "jitterMs"):
             ax.set_ylim(bottom=0)
-    fig.suptitle(suptitle, fontsize=11)
+    # Sem título interno: no artigo, a legenda da figura cumpre esse papel.
     save(fig, figures, fname)
 
 
@@ -206,19 +214,20 @@ def panel_figure(df, var, figures, fname, suptitle):
             )
         ax.set_title(f"{label} ({unit})", fontsize=13)
         ax.tick_params(labelsize=12)
+        ax.yaxis.set_major_formatter(COMMA)
         if metric in ("delayMs", "jitterMs"):
             ax.set_ylim(bottom=0)
         if var == "speed":
             ax.set_xlabel("Velocidade (m/s)", fontsize=12)
             ax.set_xticks(SPEED_ORDER)
         else:
-            ax.set_xlabel("Taxa por fluxo", fontsize=12)
+            ax.set_xlabel("Taxa por fluxo (Mbps)", fontsize=12)
             ax.set_xticks(range(len(RATE_ORDER)))
-            ax.set_xticklabels([RATE_LABELS[r] for r in RATE_ORDER], fontsize=11)
+            ax.set_xticklabels([RATE_SHORT[r] for r in RATE_ORDER], fontsize=11)
     handles, labels = axes[0][0].get_legend_handles_labels()
     fig.legend(handles, labels, loc="lower center", ncol=3, frameon=False, fontsize=11.5)
-    fig.suptitle(suptitle, fontsize=13)
-    fig.tight_layout(rect=(0, 0.05, 1, 0.96))
+    # Sem título interno: no artigo, a legenda da figura cumpre esse papel.
+    fig.tight_layout(rect=(0, 0.06, 1, 1))
     save(fig, figures, fname)
 
 
@@ -258,10 +267,10 @@ def main() -> int:
         bar_figure(
             base,
             "speed",
-            10,
+            20,
             figures,
-            "comparativo_10ms",
-            f"Comparativo dos protocolos a 10 m/s (média ± IC 95%, n = {n_runs})",
+            "comparativo_20ms",
+            f"Comparativo dos protocolos a 20 m/s (média ± IC 95%, n = {n_runs})",
         )
         panel_figure(base, "speed", figures, "metricas_vs_velocidade", "Efeito da mobilidade (1–20 m/s)")
 
