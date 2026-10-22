@@ -13,15 +13,6 @@ os protocolos AODV, OLSR e DSDV.
 Resultados, testes estatísticos e médias estão em
 `data/processed/relatorio_analise.md` e nos CSVs de `data/processed/`.
 
-## Requisitos
-
-- ns-3.48 compilado (`./ns3 build`); o simulador não é versionado neste
-  repositório.
-- Python 3 com `pandas`, `numpy`, `scipy` e `matplotlib`:
-
-```bash
-python3 -m pip install pandas numpy scipy matplotlib
-```
 
 ## Estrutura
 
@@ -40,29 +31,124 @@ manet-ns3/
 └── figures/                    # figuras em PDF e PNG (300 dpi)
 ```
 
-## Uso
+## Requisitos
 
-### 1. Compilar o programa dentro do ns-3
+- Ubuntu 24.04 (ou distribuição equivalente com `apt`)
+- ns-3.48, instalado conforme o passo 1 abaixo (o simulador não é versionado neste repositório)
+- Python 3 (as bibliotecas estão listadas em `requirements.txt`)
+
+## Organização das pastas
+
+O ns-3 e este repositório ficam lado a lado em uma mesma pasta de trabalho
+(aqui chamada `trabalho-redes/`, mas o nome é livre). Ao final da instalação:
+
+```
+trabalho-redes/
+├── ns-allinone-3.48/
+│   └── ns-3.48/          # simulador compilado (NS3_DIR aponta para cá)
+├── ns-allinone-3.48.tar.bz2
+└── manet-ns3/            # este repositório
+```
+
+Os scripts localizam o ns-3 pela variável de ambiente `NS3_DIR`, definida no passo 2.
+
+## Instalação
+
+### 1. Instalar e compilar o ns-3.48
+
+📁 **Pasta:** `trabalho-redes/`
+
+Instale as dependências do sistema:
+
+```bash
+sudo apt update
+sudo apt install g++ cmake python3 python3-pip python3-venv git wget
+```
+
+Baixe, extraia e compile o ns-3:
+
+```bash
+wget https://www.nsnam.org/releases/ns-allinone-3.48.tar.bz2
+tar xjf ns-allinone-3.48.tar.bz2
+cd ns-allinone-3.48/ns-3.48
+./ns3 configure
+./ns3 build
+cd ../..
+```
+
+A compilação leva vários minutos. O último `cd` retorna para `trabalho-redes/`.
+
+### 2. Clonar o repositório e definir `NS3_DIR`
+
+📁 **Pasta:** `trabalho-redes/`
+
+```bash
+git clone https://github.com/USUARIO/REPOSITORIO.git manet-ns3
+export NS3_DIR=$(pwd)/ns-allinone-3.48/ns-3.48
+```
+
+Confira se o caminho está correto (deve listar o arquivo `ns3`):
+
+```bash
+ls $NS3_DIR/ns3
+```
+
+O `export` vale apenas para o terminal atual. Para não precisar repeti-lo a cada
+novo terminal, grave-o no `~/.bashrc` (ainda em `trabalho-redes/`):
+
+```bash
+echo "export NS3_DIR=$(pwd)/ns-allinone-3.48/ns-3.48" >> ~/.bashrc
+```
+
+### 3. Criar o ambiente Python
+
+📁 **Pasta:** `trabalho-redes/manet-ns3/`
+
+```bash
+cd manet-ns3
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+O ambiente precisa ser ativado (`source .venv/bin/activate`) a cada novo
+terminal antes de executar os scripts Python.
+
+### 4. Compilar o programa de simulação
+
+📁 **Pasta:** `trabalho-redes/manet-ns3/`
 
 ```bash
 ./scripts/setup.sh
 ```
 
-`NS3_DIR` aponta para o ns-3; por padrão assume que ele é diretório irmão de
-`manet-ns3/`.
+O script copia `src/manet-routing.cc` para a pasta `scratch/` do ns-3 e o
+compila.
 
-### 2. Rodar um cenário isolado
+## Execução
+
+Todos os comandos desta seção partem de `trabalho-redes/manet-ns3/`, com
+`NS3_DIR` definida.
+
+### 1. Testar uma execução isolada
+
+Antes do lote completo, confirme que a simulação funciona com uma única execução:
 
 ```bash
+mkdir -p data/raw
 cd "$NS3_DIR"
 ./ns3 run "scratch/manet-routing \
   --protocol=AODV --speed=10 --run=1 --nodes=20 --flows=4 \
   --packetSize=1024 --rate=256kbps --simTime=120 --appStart=10 \
   --seed=12345 --outCsv=$OLDPWD/data/raw/smoke.csv"
+cd -
 ```
 
-O programa imprime a configuração, a autoverificação do protocolo instalado e o
-resumo da execução:
+O comando entra temporariamente na pasta do ns-3 (de onde o `./ns3` precisa ser
+executado), roda a simulação e volta para `manet-ns3/` com o `cd -`. A variável
+`$OLDPWD` faz o CSV de saída ser gravado em `manet-ns3/data/raw/smoke.csv`.
+
+A saída esperada é:
 
 ```
 [CONFIG]  protocol=AODV speed=10 ...
@@ -71,23 +157,49 @@ resumo da execução:
 [OUTPUT]  .../data/raw/smoke.csv
 ```
 
-### 3. Rodar o lote completo
+A linha `[ROUTING]` confirma o protocolo instalado, e `flowsExportados=4`
+indica que os quatro fluxos foram medidos.
+
+### 2. Rodar o lote completo
+
+O repositório já inclui os resultados parciais das 720 execuções em
+`data/raw/parts/`. Como o lote é retomável (execuções já concluídas são
+reaproveitadas), rodar `./scripts/run_all.sh` sem opções apenas consolida os
+CSVs, em poucos segundos. Para reproduzir todas as simulações do zero, use
+`FORCE=1`:
 
 ```bash
-./scripts/run_all.sh            # ~40 min em 4 núcleos; retomável
-JOBS=2 ./scripts/run_all.sh     # limita o paralelismo
-MODE=base ./scripts/run_all.sh  # só a matriz base (360 execuções)
-MODE=rate ./scripts/run_all.sh  # só a variável adicional (360 execuções)
-RUNS=5 ./scripts/run_all.sh     # menos repetições
-FORCE=1 ./scripts/run_all.sh    # ignora parciais e refaz tudo
+FORCE=1 ./scripts/run_all.sh
 ```
 
-O lote escreve um parcial por execução em `data/raw/parts/`, o log em
-`data/raw/logs/` e consolida tudo em `data/raw/results_base.csv` e
-`data/raw/results_rate.csv`. Os comandos exatos ficam em
+O script usa todos os núcleos disponíveis; com 4 núcleos, o lote completo leva
+cerca de 40 minutos. Durante a execução não há saída no terminal, pois cada
+simulação grava seu log em arquivo. Para acompanhar o andamento, abra um segundo
+terminal em `manet-ns3/` e conte os parciais concluídos (total de 720):
+
+```bash
+watch -n 5 'ls data/raw/parts | wc -l'
+```
+
+Opções disponíveis (use uma por vez, combinadas com `FORCE=1` quando quiser
+refazer as execuções):
+
+| Variável | Efeito |
+|---|---|
+| `JOBS=2` | limita o número de processos em paralelo |
+| `MODE=base` | executa só a matriz base (360 execuções) |
+| `MODE=rate` | executa só a variável adicional (360 execuções) |
+| `RUNS=5` | reduz o número de repetições por configuração |
+| `FORCE=1` | apaga os parciais e logs existentes e refaz tudo |
+
+Exemplo: `FORCE=1 JOBS=4 ./scripts/run_all.sh`.
+
+Ao final, o lote consolida os resultados em `data/raw/results_base.csv` e
+`data/raw/results_rate.csv`, mantém um parcial por execução em
+`data/raw/parts/`, os logs em `data/raw/logs/` e os comandos exatos em
 `data/raw/commands.txt`.
 
-### 4. Analisar e gerar figuras
+### 3. Analisar e gerar figuras
 
 ```bash
 python3 scripts/analyze.py
@@ -161,8 +273,7 @@ Notas:
 
 - Seed mestre fixa (`RngSeedManager::SetSeed(12345)`).
 - Repetições independentes via `RngSeedManager::SetRun(run)` com `run = 1..30`.
-- Os três protocolos usam a mesma faixa de runs, de modo que cada um enfrenta as
-  mesmas posições, velocidades e destinos.
+- Os três protocolos usam a mesma faixa de runs (1 a 30).
 - Cada execução é uma amostra independente; as métricas são agregadas dentro da
   execução (somando/ponderando os 4 fluxos) e depois resumidas entre execuções.
 - IC 95% por t-Student e comparação entre protocolos por Kruskal-Wallis, com
@@ -187,8 +298,10 @@ Notas:
 - **Propagação idealizada.** O `FriisPropagationLossModel` é fixado em 2,412 GHz
   (canal 1 do 802.11b) e o alcance resultante, ~295 m, é limitado pelo
   `ThresholdPreambleDetectionModel` do ns-3 e não pelo piso de ruído. Como a área
-  é 500 × 500 m, a rede fica conectada mas exige encaminhamento multi-salto. O
-  cenário mede o efeito da mobilidade sobre a validade das rotas e a contenção.
+  é 500 × 500 m, a comunicação exige encaminhamento multi-salto, e algumas
+  distribuições de nós podem deixar pares origem-destino temporariamente sem
+  caminho. O cenário mede o efeito da mobilidade sobre a validade das rotas e a
+  contenção.
 - **Velocidade constante por nó** e pause time zero.
 - **Uma única seed mestre**, com a variação entre execuções vindo do `run`.
 - **Vazão medida na camada de rede** (datagrama IP), ligeiramente acima do

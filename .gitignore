@@ -9,3 +9,6 @@ data/raw/smoke.csv
 
 # Sistema
 .DS_Store
+
+# Venv
+.venv/
